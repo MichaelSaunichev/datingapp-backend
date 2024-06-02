@@ -4,7 +4,7 @@ const { addMessage, getMessages, updateMessageLikes } = require('../services/glo
 const userService = require('../services/userService');
 const cardService = require('../services/cardService');
 const chatService = require('../services/chatService');
-const { render } = require('../app');
+//const { render } = require('../app');
 
 // --------------------------------------------------------------------------------------
 // User
