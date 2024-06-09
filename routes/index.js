@@ -4,6 +4,7 @@ const { addMessage, getMessages, updateMessageLikes } = require('../services/glo
 const userService = require('../services/userService');
 const cardService = require('../services/cardService');
 const chatService = require('../services/chatService');
+const reportService = require('../services/reportService');
 //const { render } = require('../app');
 
 // --------------------------------------------------------------------------------------
@@ -115,6 +116,23 @@ router.get('/api/uri/:userId', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ error: 'Error fetching user pictures' });
+  }
+});
+
+router.post('/api/report', async (req, res) => {
+  const { reportedUserId, reportingUserId, timestamp, reason } = req.body;
+
+  try {
+    // Save the report to the database (implement this function in your reportService)
+    await reportService.saveReport({ reportedUserId, reportingUserId, timestamp, reason });
+
+    // Optionally, you can also block the reported user immediately
+    await chatService.deleteChat(reportingUserId, reportedUserId);
+
+    res.status(200).json({ success: true, message: 'Report submitted and user blocked successfully' });
+  } catch (error) {
+    console.error('Error reporting user:', error);
+    res.status(500).json({ error: 'Error reporting user' });
   }
 });
 
